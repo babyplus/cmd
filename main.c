@@ -18,7 +18,7 @@ int main( int argc, char** argv )
 	}
 
 	TARGET("selected modular: %s", argv[1])
-        if (!strcmp("hello",argv[1])) return (modular_hello(argc, argv));
+	INSTALL_MODULARS
         else 
 	{
 		PUTS_RED("unsupported");
