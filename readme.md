@@ -45,4 +45,9 @@ gcc modulars/hello/hello.c -fPIC -shared -o libHello.so && gcc main.c -lHello -L
 g++ modulars/hello/hello.c -fPIC -shared -o libHello.so && g++ main.c -lHello -L. -I modulars/ && ./a.out hello 1 2 3 4 5
 ```
 
+使用脚本新增test模块  
+
+```
+bash new_modular.sh test |bash
+```
 
