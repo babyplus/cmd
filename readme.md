@@ -51,3 +51,29 @@ g++ modulars/hello/hello.c -fPIC -shared -o libHello.so && g++ main.c -lHello -L
 bash new_modular.sh test |bash
 ```
 
+# make
+
+Makefile文件由一系列规则（rules）构成。每条规则的形式如下。  
+第一行冒号前面的部分，叫做"目标"（target），冒号后面的部分叫做"前置条件"（prerequisites）；第二行必须由一个tab键起首，后面跟着"命令"（commands）。  
+"目标"是必需的，不可省略；"前置条件"和"命令"都是可选的，但是两者之中必须至少存在一个。  
+每条规则就明确两件事：构建目标的前置条件是什么，以及如何构建。  
+
+```
+<target> : <prerequisites> 
+[tab]  <commands>
+```
+
+## target
+
+一个目标（target）就构成一条规则。目标通常是文件名，指明Make命令所要构建的对象，比如上文的 a.txt 。目标可以是一个文件名，也可以是多个文件名，之间用空格分隔。  
+除了文件名，目标还可以是某个操作的名字，这称为"伪目标"（phony target）。  
+但是，如果当前目录中，正好有一个文件叫做clean，那么这个命令不会执行。因为Make发现clean文件已经存在，就认为没有必要重新构建了，就不会执行指定的rm命令。  
+为了避免这种情况，可以明确声明clean是"伪目标"，写法如下。  
+
+```
+.PHONY: clean
+clean:
+	rm *.so
+```
+
+
