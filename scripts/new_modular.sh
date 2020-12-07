@@ -1,6 +1,9 @@
+root_dir=`pwd`
+ld_dir="$root_dir/libs"
+main_c_file=$root_dir/main.c
 modular_name=${1:-hello}
-modulars_dir=${2:-modulars}
-modulars_head_file=modulars.h
+modulars_dir=${2:-$root_dir/modulars}
+modulars_head_file=$root_dir/modulars.h
 modular_dir=$modulars_dir/$modular_name
 modular_head_file=$modular_dir/$modular_name.h
 modular_cpp_file=$modular_dir/$modular_name.c
@@ -15,7 +18,6 @@ cat > $modular_head_file << EOF
 #include "../../common_macro.h"
 
 int $modular_func(int argc, char** argv);
-
 EOF
 
 cat > $modular_cpp_file << EOF
@@ -47,12 +49,12 @@ cat >> $modulars_head_file << EOF
 	}
 EOF
 
-ls $modulars_dir | awk -v modulars_dir=$modulars_dir '{print("gcc "modulars_dir"/"$1"/"$1".c -fPIC -shared -o lib"toupper(substr($1,1,1))substr($1, 2)".so")}'
+ls $modulars_dir | awk -v modulars_dir=$modulars_dir -v ld_dir=$ld_dir '{print("gcc "modulars_dir"/"$1"/"$1".c -fPIC -shared -o "ld_dir"/lib"toupper(substr($1,1,1))substr($1, 2)".so")}'
 
-echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`'
+echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ld_dir"
 
-echo -n 'gcc main.c '
+echo -n "gcc $main_c_file "
 ls $modulars_dir |awk '{print("echo -n '\''-l"toupper(substr($1,1,1))substr($1, 2))" '\''"}' |bash
-echo ' -L. -I modulars/'
+echo " -L $ld_dir -I $modulars_dir"
 
 echo "./a.out $modular_name 1 2 3 4 5"

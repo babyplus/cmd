@@ -45,10 +45,29 @@ gcc modulars/hello/hello.c -fPIC -shared -o libHello.so && gcc main.c -lHello -L
 g++ modulars/hello/hello.c -fPIC -shared -o libHello.so && g++ main.c -lHello -L. -I modulars/ && ./a.out hello 1 2 3 4 5
 ```
 
-使用脚本新增test模块  
+使用shell脚本新增test模块  
 
 ```
-bash new_modular.sh test |bash
+bash scripts/new_modular.sh test |bash
+```
+
+清除多余文件(动态链接库)  
+
+```
+make clean
+```
+
+生成modulars.h  
+
+```
+rm -f modulars.h
+make modulars.h
+```
+
+提交到仓库(不提交目录modulars/test\*/并且重新生成modulars.h)  
+
+```
+make push
 ```
 
 # make
@@ -75,5 +94,4 @@ Makefile文件由一系列规则（rules）构成。每条规则的形式如下�
 clean:
 	rm *.so
 ```
-
 
